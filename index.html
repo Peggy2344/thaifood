@@ -29,7 +29,6 @@
         <script>
             let checkPoint = 2;
             let level = 1;
-            let bg = 1;
             let score = 0;
             let deviceWidth = window.innerWidth;
             if(deviceWidth<768){
@@ -62,7 +61,6 @@
                     $('.card').eq(target).insertAfter($('.card').eq(i-1))
                     i % 2 ? '' : num++
                 }
-                bg++
                 if(window.innerWidth>768){
                     for(let k=row-1;k<totalCard;k+=row){
                     $(`<div class='block'></div>`).insertAfter($('.card').eq(k))
