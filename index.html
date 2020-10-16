@@ -50,7 +50,7 @@
                     .find('.front')
                     .css('background-image',`url(./thai/${i}.jpg)`)
                     $('.card').eq(i-1).attr('data-num',`${num}`)
-                    if(totalCard%2&&i===1){
+                    if(totalCard%2 && i===totalCard){
                         $('.card')
                         .eq(i-1)
                         .find('.front')
@@ -59,7 +59,7 @@
                         $('.card').eq(i-1).addClass('poo')
                     }
                     const target = Math.floor(Math.random()*totalCard)
-                    $('.card').eq(target).insertAfter($('.card').eq(i))
+                    $('.card').eq(target).insertAfter($('.card').eq(i-1))
                     i % 2 ? '' : num++
                 }
                 bg++
