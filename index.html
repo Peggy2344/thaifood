@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div id="container">
+            <div id="record_area">
+                <p id='lev'>LEVEL<span id='level'>1</span></p>
+                <p id="sc">Your score<span class='score'>0</span></p>
+                <p id="go">goal<span id='goal'>5</span></p>
+                <div id="start"><button id='btn_start'>start</button></div>
+            </div>
+            <div id="next">
+
+                <div><p id="congra">PERFECT</p></div>
+                <div><p id="level_score">your score:</p><p class='score' id='score'>0</p></div>
+                <div id="nextBar"><button id="btn_next">Next</button></div>
+            </div>
+            <div id="game_area">
+                <div id="cards"></div>
+            </div>
+        </div>
+        <script src="./jquery-3.5.1.min.js"></script>
+        <script>
+            let checkPoint = 2;
+            let level = 1;
+            let bg = 1;
+            let score = 0;
+            let deviceWidth = window.innerWidth;
+            if(deviceWidth<768){
+                $('p').css('font-size','1rem')
+            }
+            function createCards(row){
+                let totalCard = Math.pow(row,2)
+                let num = 3;
+                for(let i=1;i<=totalCard;i++){
+                    $('#cards').append(`
+                    <div class='card close'>
+                        <div class='back'></div>
+                        <div class='front'></div>
+                        </div>
+                        `)
+                    $('.card')
+                    .eq(i-1)
+                    .find('.front')
+                    .css('background-image',`url(./thai/${i}.jpg)`)
+                    $('.card').eq(i-1).attr('data-num',`${num}`)
+                    if(totalCard%2&&i===1){
+                        $('.card')
+                        .eq(i-1)
+                        .find('.front')
+                        .css('background-image',`url(./cards/poo.jpg)`)
+                        $('.card').eq(i-1).attr('data-num','poo')
+                        $('.card').eq(i-1).addClass('poo')
+                    }
+                    const target = Math.floor(Math.random()*totalCard)
+                    $('.card').eq(target).insertAfter($('.card').eq(i))
+                    i % 2 ? '' : num++
+                }
+                bg++
+                if(window.innerWidth>768){
+                    for(let k=row-1;k<totalCard;k+=row){
+                    $(`<div class='block'></div>`).insertAfter($('.card').eq(k))
+                    }
+                } else return
+            }
+            function next(){
+                $('#next').css('display','none')
+                checkPoint++
+                createCards(checkPoint)
+                level++
+                $('#level').text(level)
+            }
+            function clickHanlder(){
+                if($('.card:not(.close)').length < 2){
+                    $(this).removeClass('close')
+                    if($(this).hasClass('poo')){
+                        score-=3
+                        if(score<0) {
+                            score = 0
+                            $('.score').text(score)
+                        }
+                        $('.score').text(score)
+                        setTimeout(()=>{
+                    $(this).addClass('close')
+                    },600)
+                    }
+                }else return
+                if($('.card:not(.close)').length === 2){
+                    if(
+                    $('.card:not(.close)').eq(0).attr('data-num') === 
+                    $('.card:not(.close)').eq(1).attr('data-num')){
+                        score+=3
+                        $('.score').text(score)
+                        $('.card:not(.close)').fadeTo(500,0).addClass('clear')
+                    }else{
+                        score--
+                        if(score<1) {
+                            score = 0
+                            $('.score').text(score)
+                        }
+                        $('.score').text(score)
+                    }
+                    setTimeout(()=>{
+                    $('.card:not(.close.clear)').addClass('close')
+                    },600)
+                }else return                
+                if($('.clear').length === $('.card:not(.poo)').length){
+                    setTimeout(()=>{
+                    $('#cards').empty()
+                    $('#next').fadeIn(1500,0).css('display','flex')
+                    },500)
+                }
+            }
+            function start(){
+                createCards(checkPoint)
+                $('#btn_start').attr('disabled',true)
+            }
+            $('#cards').on('click','.card:not(.clear)',clickHanlder)
+            $('#btn_start').on('click',start)
+            $('#btn_next').on('click',next)
+        </script>
+    </body>
+</html>
