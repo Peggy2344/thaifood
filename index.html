@@ -50,9 +50,7 @@
             let score = 0;
             let deviceWidth = window.innerWidth;
             let practice_ary = [];
-            if(deviceWidth<768){
-                $('p').css('font-size','1rem')
-            }
+            
             function createCards(row){
                 let totalCard = 4 + row
                 let num = 1;
@@ -162,15 +160,18 @@
                 }
             }
             function retry(){
-                $('#retry').css('display','none')
+                $('#last').css('display','none')
                 $("#game_area").empty()
+                $("#game_area").css('display','block')
                 $("#practice_area").empty()
+                $("#practice_area").css('display','flex')
                 checkPoint = 0
                 score = 0
+                practice_ary=[]
                 $('.score').text(score)
                 level = 1
                 $('#level').text(level)
-                createCards(checkPoint);
+                $('#btn_start').attr('disabled',false)
             }
             $('#cards').on('click','.card:not(.clear)',clickHanlder)
             $('#practice_area').on('click','.practice',practiceHanlder)
