@@ -161,10 +161,11 @@
             }
             function retry(){
                 $('#last').css('display','none')
-                $("#game_area").empty()
+                $("#cards").empty()
                 $("#game_area").css('display','block')
                 $("#practice_area").empty()
                 $("#practice_area").css('display','flex')
+                $("#practice_area").css('border','none')
                 checkPoint = 0
                 score = 0
                 practice_ary=[]
